@@ -1,0 +1,523 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={ARVIN : Identifying Risk Noncoding Variants Using Disease-relevant Gene Regulatory Networks},
+            pdfauthor={Long Gao, Yasin Uzun, Kai Tan},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+  \title{ARVIN : Identifying Risk Noncoding Variants Using Disease-relevant Gene
+Regulatory Networks}
+  \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+  \author{Long Gao, Yasin Uzun, Kai Tan}
+  \preauthor{\centering\large\emph}
+  \postauthor{\par}
+  \predate{\centering\large\emph}
+  \postdate{\par}
+  \date{May 18, 2018}
+
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{4}
+\tableofcontents
+}
+\subsection{1 Introduction}\label{introduction}
+
+Identifying causal noncoding variants remains a daunting task. Because
+noncoding variants exert their effects in the context of a gene
+regulatory network (GRN), we hypothesize that explicit use of
+disease-relevant GRN can significantly improve the inference accuracy of
+noncoding risk variants. We describe Annotation of Regulatory Variants
+using Integrated Networks (ARVIN), a general computational framework for
+predicting causal noncoding variants. For each disease, ARVIN first
+constructs a GRN using multi-dimensional omics data oncell/tissue-type
+relevant to the disease. ARVIN then uses a set of novel regulatory
+network-based features, combined with sequence-based features to make
+predictions.
+
+This user guide explains ARVIN package. If you want to make a quick
+start and run ARVIN, please refer to the related document in this
+repository (ARVIN\_Quick\_Start.docx).
+
+ARVIN uses genome annotation and motif data. You need to download
+\url{http://tanlab4generegulation.org/arvin_annotation_data.tar.gz} to
+run ARVIN. In addition, please make sure following dependency packages
+also installed including ``caret'', ``randomForest'', and ``igraph''.
+
+\subsection{2 Network construction}\label{network-construction}
+
+As a first step of ARVIN, an integrative GRN for each disease-relevant
+cell/tissue type should be constructed. In this network, there are two
+types of nodes which are genes and snps/variants as well as two types of
+edges which are gene-gene interacstions and snp-gene interactions. Gene
+interaction network is used as the network backbone, and then this
+backbone is integrated with enhancer-promoter interactions(snp-gene
+interactions). For each type of nodes and edges, normalized scores are
+computed using cell/tissue speicific information.
+
+\subsubsection{2.1 Enhancer-promoter
+interaction}\label{enhancer-promoter-interaction}
+
+ARVIN uses enhancer-promoter interaction for mapping SNPS to genes via
+enhancers. The enhancer-promoter interaction data must be in tab
+separated format as follows:\\
+\#Chr Start End Target Score\\
+chr9 22124001 22126001 ENST00000452276 0.93\\
+chr2 242792001 242794001 ENST00000485966 0.792\\
+You can use IM-PET software for predicting enhancer-promoter
+interactions. For this purpose, you can download IM-PET from
+\url{http://tanlab4generegulation.org/IM-PET.html} . IM-PET uses
+enhancer predictions (computed using CSI-ANN) and gene expression data
+to compute enhancer-promoter interactions. You can use the output of
+IM-PET (which is as shown above) as input for ARVIN.
+
+\subsubsection{2.2 Obtain gene-gene interaction
+network}\label{obtain-gene-gene-interaction-network}
+
+Gene interaction network can be obtained from multiple sources including
+protein-protein interaction networks and functional interaction networks
+such as BioGRID, BIND, HumantNet, STRING and etc.
+
+\subsubsection{2.3 Network scoring}\label{network-scoring}
+
+To make different types of scores comparable, we used a min-max
+normalization to normalize scores within each category. For gene
+interaction network, the interaction score indicating how strong the
+interactions between genes can be directly used from corresponding
+database followed by normalization. SNP-gene interaction score can be
+assigned with enhancer-promoter score or scores indicating the
+interaction strength between enhancer and target promoters. SNPs weight
+can be represented by TF binding disruption score computed using our
+script/function. Genes can be weighted using differential expression
+information.
+
+\subsubsection{2.4 Network input file
+format}\label{network-input-file-format}
+
+There are two types of network input files users need to prepare. One is
+the node attribute file and the other is network/edge attribute file.
+The node attribute file has 3 columns. The first column denotes snp id
+or gene id, and the second column denotes the score of this snp or gene.
+The third column specifiy if this node is a snp or gene. In the network
+file, there are 4 columns. The first two columns list two nodes of a
+given edge. The third collumn has the normalized score for this edge.
+The forth column specifies edge type indicating if this interaction is
+between snps and genes or genes.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{edgeFile <-}\StringTok{ "example_1/EdgeFile.txt"}
+\NormalTok{nodeFile <-}\StringTok{ "example_1/NodeFile.txt"}
+\NormalTok{SNP_pFile <-}\StringTok{ "example_1/snp_pval.txt"}
+\NormalTok{edge_data <-}\StringTok{ }\KeywordTok{read.table}\NormalTok{(edgeFile, }\DataTypeTok{sep=}\StringTok{"}\CharTok{\textbackslash{}t}\StringTok{"}\NormalTok{)}
+\NormalTok{node_data   <-}\StringTok{ }\KeywordTok{read.table}\NormalTok{(nodeFile, }\DataTypeTok{sep=}\StringTok{"}\CharTok{\textbackslash{}t}\StringTok{"}\NormalTok{)}
+\KeywordTok{colnames}\NormalTok{(node_data) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Node"}\NormalTok{, }\StringTok{"Node score"}\NormalTok{, }\StringTok{"Node type"}\NormalTok{)}
+\KeywordTok{colnames}\NormalTok{(edge_data) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"First node"}\NormalTok{, }\StringTok{"Second node"}\NormalTok{, }\StringTok{"Edge score"}\NormalTok{, }\StringTok{"Edge type"}\NormalTok{)}
+\NormalTok{edge_data[}\DecValTok{98}\OperatorTok{:}\DecValTok{103}\NormalTok{,]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     First node Second node Edge score Edge type
+## 98    CR004576        3043  0.7854000        EP
+## 99    CR034843        3043  0.3298000        EP
+## 100   CR040152        3043  0.6225000        EP
+## 101       2237        5111  0.9965896        FI
+## 102        506         509  0.9948976        FI
+## 103        498         506  0.9827500        FI
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{node_data[}\DecValTok{98}\OperatorTok{:}\DecValTok{103}\NormalTok{,]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         Node Node score Node type
+## 98  CR004576 0.79200000      eSNP
+## 99  CR034843 0.80740000      eSNP
+## 100 CR040152 0.76540000      eSNP
+## 101       19 0.70045366      Gene
+## 102       20 0.14164698      Gene
+## 103       24 0.07013084      Gene
+\end{verbatim}
+
+\subsection{3 Prepare features for risk variants
+prediction}\label{prepare-features-for-risk-variants-prediction}
+
+\subsubsection{3.1 Network-based features}\label{network-based-features}
+
+For most of network features such as the centrality, we wrapped up
+functions from ``igraph'' package to calculate their values. We also
+implemented our module identification algorithm to find modules
+containing snps we are intereted in. To calculate all network based
+features, users can simply call NetFeature(). SNPs in the same enhancer
+usually have similar topological features. However, we can further
+distinguish them using their TF motif breaking scores.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Nodes <-}\StringTok{ }\KeywordTok{as.character}\NormalTok{(edge_data[,}\DecValTok{2}\NormalTok{])}
+\NormalTok{Net <-}\StringTok{ }\KeywordTok{makeNet}\NormalTok{(edgeFile, nodeFile)}
+\NormalTok{topoFeature <-}\KeywordTok{NetFeature}\NormalTok{(Net, nodeFile, edgeFile, SNP_pFile)}
+\KeywordTok{head}\NormalTok{(topoFeature)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##           Module_Score Betweenness Closeness  Pagerank Weighted_Degree
+## CR080767      2.602336   20.894963 0.2186483 11.166083       24.734249
+## CR083996      1.842770    4.278196 0.2139707  3.212460        6.388578
+## CR0911347     2.043153   22.710396 0.2209625  5.589152        8.799405
+## CR0911356     2.300549    1.998601 0.2116995  2.038007        4.594794
+## CR095246      2.202802   48.855359 0.2212212 31.829972       85.214685
+## CR095443      1.597560    8.052195 0.2143816  6.083444       11.806411
+##           SNP_Disrutption
+## CR080767       0.97255655
+## CR083996       0.53409931
+## CR0911347      0.81091625
+## CR0911356      0.65090651
+## CR095246       0.77098111
+## CR095443       0.03455832
+\end{verbatim}
+
+\paragraph{3.1.1 Betweenness centrality}\label{betweenness-centrality}
+
+Betweenness is a centrality measure of a vertex within a graph.
+Betweenness centrality quantifies the number of times a node acts as a
+bridge along the shortest path between two other nodes.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{bet_vals <-}\StringTok{ }\KeywordTok{BetFeature}\NormalTok{(Net, edge_data)}
+\KeywordTok{head}\NormalTok{(bet_vals)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  CR080767  CR083996 CR0911347 CR0911356  CR095246  CR095443 
+## 20.894963  4.278196 22.710396  1.998601 48.855359  8.052195
+\end{verbatim}
+
+\paragraph{3.1.2 Closeness centrality}\label{closeness-centrality}
+
+Closeness is a measure of the degree to which an individual is near all
+other individuals in a network. It is the inverse of the sum of the
+shortest distances between each node and every other node in the
+network. Closeness is the reciprocal of farness.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{close_vals <-}\StringTok{ }\KeywordTok{CloseFeature}\NormalTok{(Net, edge_data)}
+\KeywordTok{head}\NormalTok{(close_vals)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  CR080767  CR083996 CR0911347 CR0911356  CR095246  CR095443 
+## 0.2186483 0.2139707 0.2209625 0.2116995 0.2212212 0.2143816
+\end{verbatim}
+
+\paragraph{3.1.3 Pagerank centrality}\label{pagerank-centrality}
+
+PageRank (PR) is an algorithm used by Google Search to rank websites in
+their search engine results. PageRank is a way of measuring the
+importance of website pages. In the biological networks, we can also use
+this algorithm to measure the importance of genes/nodes.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{page_vals <-}\StringTok{ }\KeywordTok{PageFeature}\NormalTok{(Net, edge_data)}
+\KeywordTok{head}\NormalTok{(page_vals)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  CR080767  CR083996 CR0911347 CR0911356  CR095246  CR095443 
+## 11.166083  3.212460  5.589152  2.038007 31.829972  6.083444
+\end{verbatim}
+
+\paragraph{3.1.4 Weighted degree}\label{weighted-degree}
+
+The weighted degree of a node is like the degree. It's based on the
+number of edge for a node, but ponderated by the weigtht of each edge.
+It's doing the sum of the weight of the edges.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{wd_vals <-}\StringTok{ }\KeywordTok{WDFeature}\NormalTok{(Adj_List, edge_data)}
+\KeywordTok{head}\NormalTok{(wd_vals)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  CR080767  CR083996 CR0911347 CR0911356  CR095246  CR095443 
+## 24.734249  6.388578  8.799405  4.594794 85.214685 11.806411
+\end{verbatim}
+
+\paragraph{3.1.5 Module score}\label{module-score}
+
+Gene modules downstream of an eSNP. Our overall hypothesis is that a
+causal eSNP contributes to disease risk by directly causing expression
+changes in genes of diseaserelevant pathways. Thus, in addition to the
+direct target gene of the eSNP, other genes in the same pathway can also
+provide discriminative information. With the weighted GRN, our goal is
+to identify ``heavy'' gene modules in the network that connects a given
+eSNP to a set of genes
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mod_vals <-}\StringTok{ }\KeywordTok{ModuleFeature}\NormalTok{(Adj_List, E_adj, eSNP_seeds, V_weight, Nodes)}
+\KeywordTok{head}\NormalTok{(mod_vals)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  CR080767  CR083996 CR0911347 CR0911356  CR095246  CR095443 
+##  2.602336  1.842770  2.043153  2.300549  2.202802  1.597560
+\end{verbatim}
+
+\subsubsection{3.2 GWAVA features}\label{gwava-features}
+
+ARVIN uses sequence features for the input SNPs generated by GWAVA.
+GWAVA is an open-source software developed by Sanger Institute. You can
+either upload the SNPs to GWAVA web page and get the output or download
+the source and run locally. For running GWAVA online navigate to
+\url{https://www.sanger.ac.uk/sanger/StatGen_Gwava}, upload the list of
+input SNPs and get the features in csv format, which will be input for
+ARVIN. If you prefer to run it locally, you need to dowload the source
+code from
+\url{ftp://ftp.sanger.ac.uk/pub/resources/software/gwava/v1.0/src/} and
+annotation data from
+\url{ftp://ftp.sanger.ac.uk/pub/resources/software/gwava/v1.0/source_data/}
+. Then you can run it local by running gwava\_annotate.py and generate
+the features, which will be input for ARVIN.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{gwava <-}\StringTok{ }\KeywordTok{read.table}\NormalTok{(}\StringTok{"example_1/gwava_matrix.txt"}\NormalTok{, }\DataTypeTok{header=}\NormalTok{T, }\DataTypeTok{sep=}\StringTok{"}\CharTok{\textbackslash{}t}\StringTok{"}\NormalTok{)}
+\NormalTok{gwava[}\DecValTok{1}\OperatorTok{:}\DecValTok{8}\NormalTok{,}\DecValTok{168}\OperatorTok{:}\DecValTok{174}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##             avg_daf in_cpg seq_A seq_C seq_G seq_T repeat.
+## CR080767  0.0015376      1     0     1     0     0       0
+## CR083996  0.0016738      0     0     1     0     0       0
+## CR0911347 0.0021400      0     0     0     1     0       0
+## CR0911356 0.0013821      0     0     0     0     1       1
+## CR095246  0.0006147      0     0     1     0     0       0
+## CR095443  0.0006415      0     0     0     1     0       0
+## CR109943  0.0019969      0     0     0     0     1       1
+## CR1210014 0.0017969      0     1     0     0     0       0
+\end{verbatim}
+
+\subsubsection{3.3 FunSeq features}\label{funseq-features}
+
+ARVIN also uses sequence features generated by FunSeq. FunSeq can also
+be run online or binaries can be downloaded to run locally. For running
+FunSeq online, navigate to \url{http://funseq.gersteinlab.org/analysis}
+and upload the list of SNPs that you want to analyze. In the web page,
+it is noted that the input SNPs can be uploaded in bed format, SNP
+coordinates followed by reference and alternate alleles; but we
+discovered that it fails to process bed input. In order to have it run,
+you the first two seperators need to be two spaces and last two
+separators need to be tabs, as follows:\\
+chr16··4526757··4526758 G A\\
+chr14··52733136··52733137 C A\\
+where each dot (·) represents a space. Then, FunSeq will generate the
+features by selecting ``bed'' as the output format., which will be used
+as input by ARVIN.
+
+If you prefer to run FunSeq locally, you can download FunSeq binaries
+from \url{http://funseq.gersteinlab.org/static/funseq-0.1.tar.gz} and
+extract it into your local. You will also need to download FunSeq
+annotation data from
+\url{http://funseq.gersteinlab.org/static/data/data.tar.gz} , extract it
+into directory that you saved the binaries. Then you can run FunSeq
+binary file by setting the output format to bed.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{funseq <-}\StringTok{ }\KeywordTok{read.table}\NormalTok{(}\StringTok{"example_1/funseq_matrix.txt"}\NormalTok{, }\DataTypeTok{header=}\NormalTok{T, }\DataTypeTok{sep=}\StringTok{"}\CharTok{\textbackslash{}t}\StringTok{"}\NormalTok{)}
+\KeywordTok{head}\NormalTok{(funseq)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##           is_annotated_in_encode is_sensitive is_ultrasensitive
+## CR080767                       1            0                 0
+## CR083996                       1            0                 0
+## CR0911347                      1            0                 0
+## CR0911356                      1            0                 0
+## CR095246                       1            0                 0
+## CR095443                       1            0                 0
+##           is_motif_breaking target_gene_known taget_gene_is_hub
+## CR080767                  0                 0                 0
+## CR083996                  0                 1                 0
+## CR0911347                 0                 0                 0
+## CR0911356                 0                 0                 0
+## CR095246                  0                 0                 0
+## CR095443                  0                 0                 0
+\end{verbatim}
+
+\subsection{4 Build a classifier for prioritizing risk
+varints}\label{build-a-classifier-for-prioritizing-risk-varints}
+
+\subsubsection{4.1 Train a random forest
+classifier}\label{train-a-random-forest-classifier}
+
+Combining network, GWAVA features and FunSeq features, a random forest
+model can be trained to predict risk SNPs.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#combine 3 types of features}
+\NormalTok{group <-}\StringTok{ }\KeywordTok{as.character}\NormalTok{(}\KeywordTok{read.table}\NormalTok{(}\StringTok{"example_1/snp_labels.txt"}\NormalTok{)[,}\DecValTok{1}\NormalTok{])}
+\NormalTok{features <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(topoFeature, gwava, funseq, group)}
+\NormalTok{RFmodel <-}\StringTok{ }\KeywordTok{trainMod}\NormalTok{(features)}\CommentTok{#train a random forest classifier}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "The random forest model has been trained!"
+\end{verbatim}
+
+\subsubsection{4.2 Predict causal disease
+variants}\label{predict-causal-disease-variants}
+
+By providing the trained random forest model with feature values, users
+can compute the prediction score for a list of snps or candidate
+variants for being risk snps or non-risk snps.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{prob <-}\StringTok{ }\KeywordTok{predMod}\NormalTok{(features[,}\OperatorTok{-}\KeywordTok{dim}\NormalTok{(features)[}\DecValTok{2}\NormalTok{]], RFmodel)}\CommentTok{#estimate the probablity score using trained model after removing the label/group informatin}
+\KeywordTok{head}\NormalTok{(prob)}\CommentTok{#display the probablity score as positive or negative snps}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##             neg   pos
+## CR080767  0.442 0.558
+## CR083996  0.386 0.614
+## CR0911347 0.444 0.556
+## CR0911356 0.402 0.598
+## CR095246  0.432 0.568
+## CR095443  0.420 0.580
+\end{verbatim}
+
+
+\end{document}
